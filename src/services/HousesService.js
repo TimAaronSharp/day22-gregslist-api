@@ -1,7 +1,7 @@
 
 
 class HousesService {
-  async getHouses() {
+  async getAllHouses() {
 
   }
 }
