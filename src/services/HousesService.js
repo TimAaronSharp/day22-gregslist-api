@@ -9,10 +9,37 @@ class HousesService {
   }
 
   async getHousesByQuery(houseQuery) {
+    const pageNumber = parseInt(houseQuery.page) || 1
+    const houseLimit = 5
+    const skipAmount = pageNumber * houseLimit - houseLimit
+
+    delete houseQuery.page
+
     const sortBy = houseQuery.sort
     delete houseQuery.sort
-    const houses = await dbContext.Houses.find(houseQuery).sort(sortBy)
-    return houses
+
+    const housesCount = await dbContext.Houses.countDocuments(houseQuery)
+    const totalPages = Math.ceil(housesCount / houseLimit)
+
+    if (pageNumber > totalPages) {
+      throw new BadRequest(`${pageNumber} is greater than the total amount of pages, you MORON!!!`)
+    }
+
+    const houses = await dbContext.Houses
+      .find(houseQuery)
+      .limit(houseLimit)
+      .skip(skipAmount)
+      .sort(sortBy)
+      .populate('creator')
+
+    const responseObj = {
+      currentPage: pageNumber,
+      houses: houses,
+      totalHouses: housesCount,
+      totalPages: totalPages
+    }
+
+    return responseObj
   }
 
   async getHouseById(houseId) {
