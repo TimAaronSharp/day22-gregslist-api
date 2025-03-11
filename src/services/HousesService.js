@@ -9,7 +9,9 @@ class HousesService {
   }
 
   async getHousesByQuery(houseQuery) {
-    const houses = await dbContext.Houses.find(houseQuery)
+    const sortBy = houseQuery.sort
+    delete houseQuery.sort
+    const houses = await dbContext.Houses.find(houseQuery).sort(sortBy)
     return houses
   }
 
