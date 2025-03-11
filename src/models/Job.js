@@ -1,15 +1,14 @@
 import { Schema } from "mongoose";
 
 
-export const HouseSchema = new Schema(
+export const JobSchema = new Schema(
   {
-    bedrooms: { type: Number, min: 0, max: 30, required: true },
-    bathrooms: { type: Number, min: 0, max: 25, required: true },
-    levels: { type: Number, min: 1, max: 4, required: true },
-    price: { type: Number, min: 0, max: 10000000, required: true },
+    company: { type: String, minLength: 0, maxLength: 100, required: true },
+    jobTitle: { type: String, minLength: 0, maxLength: 100, required: true },
+    hours: { type: Number, min: 1, max: 168, required: true },
+    rate: { type: Number, min: 1, max: 100000000, required: true },
     imgUrl: { type: String, minLength: 0, maxLength: 500, required: true },
     description: { type: String, minLength: 0, maxLength: 500, required: false },
-    year: { type: Number, min: 1000, max: 2024, required: true },
     creatorId: { type: Schema.ObjectId, required: true, ref: 'Account' }
   },
   {
@@ -17,7 +16,7 @@ export const HouseSchema = new Schema(
   }
 )
 
-HouseSchema.virtual('creator', {
+JobSchema.virtual('creator', {
   ref: 'Account',
   localField: 'creatorId',
   foreignField: '_id',
