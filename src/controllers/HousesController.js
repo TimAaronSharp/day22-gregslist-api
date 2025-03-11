@@ -11,7 +11,6 @@ export class HousesController extends BaseController {
       .get('/search', this.getHousesByQuery)
       .get('/:houseId', this.getHouseById)
   }
-
   /**
    * @param {import("express").Request} req
    * @param {import("express").Response} res
@@ -30,10 +29,12 @@ export class HousesController extends BaseController {
    * @param {import("express").Request} req
    * @param {import("express").Response} res
    * @param {import("express").NextFunction} next
-   */
-  getHouseById(req, res, next) {
+  */
+  async getHousesByQuery(req, res, next) {
     try {
-      res.send('🏠 GREAT id success!')
+      const houseQuery = req.query
+      const houses = await housesService.getHousesByQuery(houseQuery)
+      res.send(houses)
     } catch (error) {
       next(error)
     }
@@ -43,9 +44,11 @@ export class HousesController extends BaseController {
    * @param {import("express").Response} res
    * @param {import("express").NextFunction} next
    */
-  getHousesByQuery(req, res, next) {
+  async getHouseById(req, res, next) {
     try {
-      res.send('🏠 GREAT query success!')
+      const houseId = req.params.houseId
+      const house = await housesService.getHouseById(houseId)
+      res.send(house)
     } catch (error) {
       next(error)
     }
