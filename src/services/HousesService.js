@@ -19,10 +19,10 @@ class HousesService {
     delete houseQuery.sort
 
     const housesCount = await dbContext.Houses.countDocuments(houseQuery)
-    const totalPages = Math.ceil(housesCount / houseLimit)
+    const totalPages = Math.ceil(housesCount / houseLimit) || 1
 
     if (pageNumber > totalPages) {
-      throw new BadRequest(`${pageNumber} is greater than the total amount of pages, you MORON!!!`)
+      throw new BadRequest(`${pageNumber} is greater than the total amount of pages (${totalPages}), you MORON!!!`)
     }
 
     const houses = await dbContext.Houses
@@ -44,6 +44,7 @@ class HousesService {
 
   async getHouseById(houseId) {
     const house = await dbContext.Houses.findById(houseId)
+
     if (house == null) {
       throw new BadRequest(`${houseId} is not a valid house id, you MORON!!!`)
     }
