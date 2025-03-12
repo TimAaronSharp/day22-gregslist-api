@@ -19,7 +19,7 @@ export class PetsController extends BaseController {
   async getAllPets(req, res, next) {
     try {
       const pets = await petsService.getAllPets()
-      res.send()
+      res.send(pets)
     } catch (error) {
       next(error)
     }
@@ -33,7 +33,7 @@ export class PetsController extends BaseController {
     try {
       const petQuery = req.query
       const pets = await petsService.getPetsByQuery(petQuery)
-      res.send()
+      res.send(pets)
     } catch (error) {
       next(error)
     }
@@ -47,7 +47,7 @@ export class PetsController extends BaseController {
     try {
       const petId = req.params.petId
       const pet = await petsService.getPetById(petId)
-      res.send()
+      res.send(pet)
     } catch (error) {
       next(error)
     }
